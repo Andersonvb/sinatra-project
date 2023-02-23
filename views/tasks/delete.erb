@@ -1,0 +1,9 @@
+<p>Are you sure you want to delete this task?</p>
+
+<p><%= @task.content %></p>
+
+<form action="/tasks/<%= @task.id %>" method="POST">
+  <!-- <input type="hidden" name="_method" value="delete" /> -->
+  <button type="submit">Cancel</button>
+  <button type="submit">Yes</button>
+</form>
