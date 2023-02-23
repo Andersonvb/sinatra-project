@@ -20,11 +20,11 @@ class Task
     task = {
       content: content,
       completed: completed
-    }
+    }.to_json
 
     if id.nil?
       response = Net::HTTP.post(uri, task, headers)
-      @id = JSON.parse(response)['_id']
+      @id = JSON.parse(response.body)['_id']
     else
       uri = URI("#{URL}/#{id}")
       Net::HTTP.put(uri, task, headers)
@@ -35,7 +35,7 @@ class Task
     uri = URI("#{URL}/#{id}")
     response = Net::HTTP.get(uri)
 
-    Task.new(JSON.parse(response))
+    Task.new(JSON.parse(response.body))
   end
 
   def self.all
