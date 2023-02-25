@@ -5,8 +5,7 @@ require 'net/http'
 require 'httparty'
 
 class Task
-  # BASE_URL = 'https://crudcrud.com/api/3d438503e4ab47c48178da26a34a3aea/tasks'
-  BASE_URL = ''
+  BASE_URL = 'https://crudcrud.com/api/3d438503e4ab47c48178da26a34a3aea/tasks'
   HEADERS = {
     'Content-Type' => 'application/json',
     'Accept' => 'application/json'
@@ -27,6 +26,15 @@ class Task
     }.to_json
 
     HTTParty.post("#{BASE_URL}", headers: HEADERS, body: task)
+  end
+
+  def update(id, content, completed)
+    updated_task = {
+      content: content,
+      completed: completed
+    }.to_json
+
+    HTTParty.put("#{BASE_URL}/#{id}", headers: HEADERS, body: updated_task)
   end
 
   def destroy

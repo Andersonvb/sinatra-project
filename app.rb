@@ -27,3 +27,14 @@ post '/tasks/:id' do
   task.destroy
   redirect '/'
 end
+
+# Complete task
+get '/complete/:id' do
+  task = Task.find(params[:id])
+  if task.completed
+    task.update(task.id, task.content, false)
+  else
+    task.update(task.id, task.content, true)
+  end
+  redirect '/'
+end

@@ -1,9 +1,18 @@
 <form action="/tasks" method="POST" class="task-form">
   <input type="text" name="content" class="task-input">
-  <button type="submit" class="task-btn">Add Task</button>
+  <input type="submit" value="Add Task" class="task-btn">
 </form>
 
 <% @tasks.each do |task| %>
-  <%= task.content %>
-  <a href="/delete/<%= task.id %>">Delete</a>
+  <article class="task">
+    <span class="task__content"><%= task.content %></span>
+
+    <a href="/complete/<%= task.id %>" class="task__btn">
+      <% if task.completed %>
+        <span class="material-symbols-outlined">done</span>
+      <% end %>
+    </a>
+
+    <a href="/delete/<%= task.id %>" class="task__btn">Delete</a>
+  </article>
 <% end %>
