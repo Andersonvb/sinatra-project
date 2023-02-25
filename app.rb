@@ -23,7 +23,7 @@ get '/delete/:id' do
 end
 
 post '/tasks/:id' do
-  @task = Task.find(params[:id])
-  @task.destroy
+  task = Task.find(params[:id])
+  task.destroy
   redirect '/'
 end

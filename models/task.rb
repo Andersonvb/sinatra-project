@@ -2,9 +2,15 @@
 
 require 'json'
 require 'net/http'
+require 'httparty'
 
 class Task
-  BASE_URL = 'https://crudcrud.com/api/71313388b24a495abc280a6e55de854c/tasks'
+  # BASE_URL = 'https://crudcrud.com/api/3d438503e4ab47c48178da26a34a3aea/tasks'
+  BASE_URL = ''
+  HEADERS = {
+    'Content-Type' => 'application/json',
+    'Accept' => 'application/json'
+  }
 
   attr_accessor :id, :content, :completed
 
@@ -15,47 +21,27 @@ class Task
   end
 
   def save
-    uri = URI(BASE_URL)
-    headers = { 'Content-Type': 'application/json' }
     task = {
-      content: content,
-      completed: completed
+      content: @content,
+      completed: @completed
     }.to_json
 
-    if id.nil?
-      response = Net::HTTP.post(uri, task, headers)
-      @id = JSON.parse(response.body)['_id']
-    else
-      uri = URI("#{BASE_URL}/#{id}")
-      Net::HTTP.put(uri, task, headers)
-    end
+    HTTParty.post("#{BASE_URL}", headers: HEADERS, body: task)
   end
 
-  def self.find(id)
-    uri = URI("#{BASE_URL}/#{id}")
-    response = Net::HTTP.get(uri)
-
-    Task.new(JSON.parse(response))
+  def destroy
+    HTTParty.delete("#{BASE_URL}/#{@id}", headers: HEADERS)
   end
 
   def self.all
-    uri = URI(BASE_URL)
-    response = Net::HTTP.get(uri)
-    tasks = JSON.parse(response)
+    response = HTTParty.get("#{BASE_URL}", headers: HEADERS)
 
-    tasks.map { |task| Task.new(task) }
+    response.map { |task_params| Task.new(task_params) }
   end
 
-  # TODO: Arreglar este bug, no elimina esa cosa
-  def destroy
-    uri = URI("#{BASE_URL}/#{id}")
-    request = Net::HTTP::Delete.new(uri)
+  def self.find(id)
+    task_params = HTTParty.get("#{BASE_URL}/#{id}", headers: HEADERS)
 
-    # Se usa Net::HTTP.start para enviar la solicitud a traves de HTTP
-    response = Net::HTTP.start(uri.hostname, uri.port) do |http|
-      http.request(request)
-    end 
-
-    puts "RESPONSEEEEEE #{response}" 
+    Task.new(task_params)
   end
 end
