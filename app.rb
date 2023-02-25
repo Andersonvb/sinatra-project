@@ -5,7 +5,13 @@ require_relative './models/task'
 
 # Index
 get '/' do
-  @tasks = Task.all
+  # TODO: Eliminar este comentario cuando tenga una nueva key
+  # @tasks = Task.all
+  @tasks = [
+    Task.new({'id' => '12345', 'content' => 'This is a task', 'completed' => true}),
+    Task.new({'id' => '123456', 'content' => 'This is another task', 'completed' => false}),
+    Task.new({'id' => '123457', 'content' => 'This is another task', 'completed' => false}),
+  ]
   erb :index
 end
 

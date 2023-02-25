@@ -1,18 +1,30 @@
+<!-- Task Form -->
 <form action="/tasks" method="POST" class="task-form">
   <input type="text" name="content" class="task-input">
   <input type="submit" value="Add Task" class="task-btn">
 </form>
 
+<!-- Show all tasks -->
 <% @tasks.each do |task| %>
-  <article class="task">
+  <article class="task <%= task.completed ? 'task-completed' : '' %>">
     <span class="task__content"><%= task.content %></span>
+  
+    <div class="task__links">
+      <a href="/complete/<%= task.id %>" class="task__btn">
+        <% if task.completed %>
+          <span class="material-symbols-outlined">check_box</span>
+        <% else %>
+          <span class="material-symbols-outlined">check_box_outline_blank</span>
+        <% end %>
+      </a>
 
-    <a href="/complete/<%= task.id %>" class="task__btn">
-      <% if task.completed %>
-        <span class="material-symbols-outlined">done</span>
-      <% end %>
-    </a>
-
-    <a href="/delete/<%= task.id %>" class="task__btn">Delete</a>
+      <a href="/delete/<%= task.id %>" class="task__btn">
+        <span class="material-symbols-outlined">delete</span>
+      </a>
+    </div>
   </article>
 <% end %>
+
+<!-- Show extra information -->
+<span>You have <%= @tasks.count { |task| task.completed == false } %> pending tasks.</span>
+

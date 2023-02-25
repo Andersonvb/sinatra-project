@@ -5,7 +5,8 @@ require 'net/http'
 require 'httparty'
 
 class Task
-  BASE_URL = 'https://crudcrud.com/api/3d438503e4ab47c48178da26a34a3aea/tasks'
+  # TODO: Cambiar la key cuando pueda 
+  BASE_URL = 'https://crudcrud.com/api/71313388b24a495abc280a6e55de854c/tasks'
   HEADERS = {
     'Content-Type' => 'application/json',
     'Accept' => 'application/json'
